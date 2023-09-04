@@ -2,20 +2,15 @@
 <html>
 <head>
     <title>Upload an image</title>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#upload_submit").click(function () {
-                $(this).attr("disabled", true);
-            });
-        });
-    </script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="upload.js"></script>
 </head>
 <body>
     <h1>Upload an image</h1>
-    <form action="upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="image" id="choose_file" />
-        <button type="submit" id="upload_submit">Upload</button>
-    </form>
+    <div>
+        <input type="file" id="choose_file" />
+        <button id="upload_submit">Upload</button>
+    </div>
+    <div id="uploading" style="display: none;"><em>Please wait...</em></div>
 </body>
 </html>
