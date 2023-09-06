@@ -1,18 +1,6 @@
 import * as Ffmpeg from 'fluent-ffmpeg';
 import { Readable, PassThrough } from 'stream';
-
-// TODO: Set specific size in pixels, cropping
-
-export interface OptimageOptions {
-	maxSize: number;
-	quality?: string;
-	scaling?: string;
-};
-
-export interface OptimageResponse {
-	originalSize: number;
-	compressedSize: number;
-};
+import { OptimageOptions, OptimageResponse } from './optimage.interfaces';
 
 export function optimageConvert(buffer: Buffer, options: OptimageOptions = { maxSize: 1024*1024 }): Promise<OptimageResponse> {
 	const originalSize = buffer.length;
@@ -26,10 +14,13 @@ export function optimageConvert(buffer: Buffer, options: OptimageOptions = { max
 
 		let command = Ffmpeg().input(image).outputFormat('webp');
 		if (options.quality) {
-			command = command.outputOptions(['-quality', options.quality]);
+			command = command.outputOption(['-quality', options.quality.toString()]);
 		}
-		if (options.scaling) {
-			command = command.size(options.scaling);
+		if (options.compressionLevel) {
+			command = command.outputOption(['-compression_level', options.compressionLevel.toString()]);
+		}
+		if (options.width || options.height) {
+			command = command.size(`${options.width || '?'}x${options.height || '?'}`);
 		}
 		command.on('error', reject).stream(passThrough, { end: true });
 
